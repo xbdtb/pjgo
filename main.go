@@ -54,11 +54,32 @@ func (a MyAccount) onRegState(prm pjsua2.OnRegStateParam) {
 		prm.GetCode(), prm.GetReason())
 }
 
+func (a MyAccount) OnIncomingCall(arg2 pjsua2.OnIncomingCallParam) {
+	call := NewMyCall(a.Account, arg2.GetCallId())
+	ci := call.GetInfo()
+	log.Info(ci)
+}
+
 // NewMyAccount constructs a new MyAccount
 func NewMyAccount() *MyAccount {
 	p := MyAccount{}
 	p.Account = pjsua2.NewAccount()
 	return &p
+}
+
+type MyCall struct {
+	pjsua2.Call
+}
+
+func (c MyCall) onRegState(prm pjsua2.OnRegStateParam) {
+	log.Infof("*** on registration state (%s) (%s)",
+		prm.GetCode(), prm.GetReason())
+}
+
+func NewMyCall(a ...interface{}) *MyCall {
+	c := MyCall{}
+	c.Call = pjsua2.NewCall(a...)
+	return &c
 }
 
 // MyLogger extends base pjsua2 logger to create a customized logger
@@ -125,11 +146,11 @@ func main() {
 
 	// Configure an account configuration
 	aCfg := pjsua2.NewAccountConfig()
-	aCfg.SetIdUri("sip:test@pjsip.org")
+	aCfg.SetIdUri("sip:1002@192.168.110.128:5060")
 	aRegCfg := pjsua2.NewAccountRegConfig()
-	aRegCfg.SetRegistrarUri("sip:pjsip.org")
+	aRegCfg.SetRegistrarUri("sip:192.168.110.128:5060")
 	aCfg.SetRegConfig(aRegCfg)
-	cred := pjsua2.NewAuthCredInfo("digest", "*", "test", 0, "secret")
+	cred := pjsua2.NewAuthCredInfo("digest", "*", "1002", 0, "1234")
 	aSipCfg := pjsua2.NewAccountSipConfig()
 	credVec := pjsua2.NewAuthCredInfoVector(int64(1))
 	credVec.Add(cred)
@@ -139,9 +160,16 @@ func main() {
 	// Create the account
 	acc := NewMyAccount()
 	acc.Create(aCfg)
+	// prm := pjsua2.NewCallOpParam(true)
+	// opt := pjsua2.NewCallSetting()
+	// opt.SetAudioCount(1)
+	// opt.SetVideoCount(0)
+	// prm.SetOpt(opt)
+	// call := NewMyCall(acc.Account)
+	// call.MakeCall("sip:1002@192.168.110.128:5060", prm)
 
 	// Here we don't have anything else to do ...
-	time.Sleep(5 * time.Second)
+	time.Sleep(555555 * time.Second)
 
 	// terminate
 	ep.LibDestroy()

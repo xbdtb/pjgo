@@ -8,6 +8,11 @@ package pjsua2
 #cgo CPPFLAGS: -DPJMEDIA_USE_OLD_FFMPEG=1
 #cgo CPPFLAGS: -I/usr/local/include -I/usr/include
 #cgo CPPFLAGS: -I/usr/include/c++/5 -I/usr/include/x86_64-linux-gnu/c++/5
+#cgo CPPFLAGS: -I/root/pjproject/pjlib/include
+#cgo CPPFLAGS: -I/root/pjproject/pjlib-util/include
+#cgo CPPFLAGS: -I/root/pjproject/pjnath/include
+#cgo CPPFLAGS: -I/root/pjproject/pjmedia/include
+#cgo CPPFLAGS: -I/root/pjproject/pjsip/include
 #cgo LDFLAGS: -L/usr/local/lib
 #cgo LDFLAGS: -lpjsua2
 #cgo LDFLAGS: -lpjsua
