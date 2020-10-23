@@ -11,6 +11,14 @@ That's where [SWIG](http://www.swig.org/) comes into play - the [Simplified Wrap
 Fortunately the pjsip source tree contains a SWIG definition for pjsua2 ([see github](https://github.com/pjsip/pjproject/tree/master/pjsip-apps/src/swig)). With this, SWIG can create a Go wrapper for pjsua2.
 
 ```sh
+wget http://prdownloads.sourceforge.net/swig/swig-4.0.2.tar.gz
+tar zxvf swig-4.0.2.tar.gz
+cd swig-4.0.2
+./configure --without-pcre
+make install
+```
+
+```sh
 swig -c++ -go -cgo -intgosize 64 \
     -outcurrentdir \
     -I/usr/local/include \
